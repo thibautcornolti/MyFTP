@@ -27,11 +27,13 @@ bool bind_socket(int port, net_t *ns)
 	ns->s_in.sin_family = AF_INET;
 	ns->s_in.sin_port = htons(port);
 	ns->s_in.sin_addr.s_addr = INADDR_ANY;
+	ns->s_in_len = sizeof(ns->s_in);
 	if (bind(ns->fd, (const struct sockaddr *) &ns->s_in,
 		sizeof(ns->s_in)) == -1) {
 		perror("Error when binding socket");
 		return (false);
 	}
+	getsockname(ns->fd, (struct sockaddr *) &ns->s_in, &ns->s_in_len);
 	return (true);
 }
 

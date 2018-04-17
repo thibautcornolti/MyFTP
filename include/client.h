@@ -7,7 +7,18 @@
 
 #pragma once
 
-#include "../include/socket.h"
 #include <unistd.h>
+#include <string.h>
+#include "../include/socket.h"
 
-bool accept_clients(net_t *);
+typedef struct {
+	char *user;
+	bool logged;
+	char *pathname;
+	char *home;
+	net_t pasv_listen;
+	net_t pasv_client;
+	bool netted;
+} sess_t;
+
+bool accept_clients(char *, net_t *);

@@ -16,6 +16,7 @@
 #include <stdbool.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
 	struct sockaddr_in s_in;
