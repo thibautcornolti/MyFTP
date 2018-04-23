@@ -9,6 +9,7 @@ SRCS	= ./src/main.c \
 		./src/socket.c \
 		./src/client.c \
 		./src/ftp.c \
+		./src/passive.c \
 		./src/cmds/user.c \
 		./src/cmds/pass.c \
 		./src/cmds/cwd.c \
@@ -29,7 +30,9 @@ SRCS	= ./src/main.c \
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I 
-CFLAGS += -W -Wall -Wextra
+CFLAGS += -W -Wall -Wextra -g
+
+LDFLAGS += -pthread
 
 all: $(NAME)
 
