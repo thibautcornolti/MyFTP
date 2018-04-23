@@ -6,11 +6,13 @@ RM	= rm -f
 
 SRCS	= ./src/main.c \
 		./src/str_tools.c \
+		./src/socket_tools.c \
 		./src/socket.c \
 		./src/client.c \
 		./src/ftp.c \
 		./src/passive.c \
 		./src/active.c \
+		./src/path.c \
 		./src/cmds/user.c \
 		./src/cmds/pass.c \
 		./src/cmds/cwd.c \

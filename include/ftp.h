@@ -13,12 +13,14 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <fcntl.h>
 #include <dirent.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <linux/limits.h>
-#include "../include/str_tools.h"
 #include "../include/client.h"
+#include "../include/str_tools.h"
 #include "../include/socket.h"
 
 bool commander(sess_t *, char *, net_t *);
