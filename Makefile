@@ -10,6 +10,7 @@ SRCS	= ./src/main.c \
 		./src/client.c \
 		./src/ftp.c \
 		./src/passive.c \
+		./src/active.c \
 		./src/cmds/user.c \
 		./src/cmds/pass.c \
 		./src/cmds/cwd.c \
@@ -24,7 +25,6 @@ SRCS	= ./src/main.c \
 		./src/cmds/retr.c \
 		./src/cmds/stor.c \
 		./src/cmds/list.c \
-		./src/cmds/auth.c \
 		./src/cmds/type.c \
 
 OBJS	= $(SRCS:.c=.o)

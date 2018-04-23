@@ -30,7 +30,7 @@ static void fork_client(char *anonymousPath, net_t *client)
 			buff[idx++ % 2048] = c;
 	} while (ret > 0 && commander(&session, buff, client));
 	if (session.netted) {
-		close(session.pasv_client.fd);
+		close(session.client.fd);
 		close(session.pasv_listen.fd);
 	}
 	dprintf(1, "Client %s disconnected!\n", inet_ntoa(client->s_in.sin_addr));

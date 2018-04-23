@@ -11,6 +11,7 @@ bool cmd_quit(sess_t *sess, char *line, net_t *client)
 {
 	(void) sess;
 	(void) line;
-	dprintf(client->fd, "331 User name okay, need password.\n");
-	return (true);
+	dprintf(client->fd, "221 Service closing control connection.\n\
+Logged out if appropriate.\n");
+	return (false);
 }

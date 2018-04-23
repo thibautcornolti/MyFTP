@@ -31,16 +31,16 @@ static void *threading_passive_mode(void *d)
 	getsockname(sess->pasv_listen.fd,
 		(struct sockaddr *) &sess->pasv_listen.s_in,
 		&sess->pasv_listen.s_in_len);
+	sess->active = false;
 	sess->netted = true;
 	pthread_cond_broadcast(&sess->pasv_cond);
 	pthread_mutex_lock(&sess->pasv_mutex);
-	if (!accept_socket(&sess->pasv_client, &sess->pasv_listen)) {
+	if (!accept_socket(&sess->client, &sess->pasv_listen)) {
 		close_socket(&sess->pasv_listen);
+		sess->netted = false;
 		pthread_mutex_unlock(&sess->pasv_mutex);
-	} else {
-		sess->netted = true;
+	} else
 		pthread_mutex_unlock(&sess->pasv_mutex);
-	}
 	return (NULL);
 }
 
@@ -74,8 +74,8 @@ void kill_passive_mode(sess_t *sess)
 
 void close_passive_mode(sess_t *sess)
 {
-	usleep(50000);
 	sess->netted = false;
+	sess->active = false;
 	close_socket(&sess->pasv_listen);
-	close_socket(&sess->pasv_client);
+	close_socket(&sess->client);
 }
