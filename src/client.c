@@ -20,7 +20,6 @@ static void fork_client(char *anonymousPath, net_t *client)
 	session.pathname = strdup(anonymousPath);
 	session.home = strdup(anonymousPath);
 	pthread_mutex_init(&session.pasv_mutex, NULL);
-	session.logged = 1; //TODO: REMOVE DEBUG
 	dprintf(client->fd, "220 Service ready for new user.\n");
 	do {
 		c = 0;
