@@ -26,5 +26,5 @@ char *get_arg(char *line, int nb)
 		if (nb < 0)
 			return (strndup(line + temp, i - temp));
 	}
-	return (strdup(line));
+	return (NULL);
 }
