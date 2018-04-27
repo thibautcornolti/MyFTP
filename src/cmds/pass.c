@@ -18,6 +18,6 @@ bool cmd_pass(sess_t *sess, char *line, net_t *client)
 			dprintf(client->fd, "230 User logged in, proceed.\n");
 		}
 	else
-		dprintf(client->fd, "332 Need account for login.\n");
+		dprintf(client->fd, "530 Login incorrect.\n");
 	return (true);
 }
