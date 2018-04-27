@@ -11,6 +11,6 @@ bool cmd_help(sess_t *sess, char *line, net_t *client)
 {
 	(void) sess;
 	(void) line;
-	dprintf(client->fd, "331 User name okay, need password.\n");
+	dprintf(client->fd, "214 Help message.\n");
 	return (true);
 }
