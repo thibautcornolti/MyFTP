@@ -16,7 +16,7 @@ static void cmd_list_do(sess_t *sess, char *path)
 	int pid = fork();
 
 	if (pid > 0) {
-		asprintf(&cmd, "ls -l %s", path);
+		asprintf(&cmd, "ls -l %s | tail -n+2", path);
 		dup2(sess->client.fd, 1);
 		dup2(sess->client.fd, 2);
 		system(cmd);

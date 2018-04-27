@@ -9,7 +9,7 @@
 #include "../../include/socket_tools.h"
 #include "../../include/str_tools.h"
 
-static void cmd_retr_do(sess_t *sess, char *file)
+static void cmd_retr_do(sess_t *sess, char *file, net_t *client)
 {
 	int pid = fork();
 	char buff[4096];
@@ -17,8 +17,10 @@ static void cmd_retr_do(sess_t *sess, char *file)
 	size_t r = 0;
 
 	if (pid > 0) {
-		if ((fd = open(file, O_RDONLY)) < 0)
+		if ((fd = open(file, O_RDONLY)) < 0) {
+			dprintf(client->fd, "550 Failed to open file.\n");
 			exit(1);
+		}
 		while ((r = read(fd, buff, 4096)) != 0)
 			write(sess->client.fd, buff, r);
 		exit(0);
@@ -46,7 +48,7 @@ bool cmd_retr(sess_t *sess, char *line, net_t *client)
 		prepare_cmd(sess);
 		dprintf(client->fd, "150 File status okay; about to open data \
 connection.\n");
-		cmd_retr_do(sess, new);
+		cmd_retr_do(sess, new, client);
 		finish_cmd(sess);
 		dprintf(client->fd, "226 Closing data connection. Requested \
 file action successful (for example, file transfer or file abort).\n");
