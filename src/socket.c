@@ -16,9 +16,9 @@ bool create_socket(net_t *ns)
 		perror("Error when creating socket");
 		return (false);
 	}
-	if (setsockopt(ns->fd, SOL_SOCKET, SO_REUSEADDR,
-		&(int){ 1 }, sizeof(int)) < 0)
-    		return (false);
+	if (setsockopt(ns->fd, SOL_SOCKET, SO_REUSEADDR, &(int){1},
+			sizeof(int)) < 0)
+		return (false);
 	return (true);
 }
 
@@ -28,12 +28,12 @@ bool bind_socket(int port, net_t *ns)
 	ns->s_in.sin_port = htons(port);
 	ns->s_in.sin_addr.s_addr = INADDR_ANY;
 	ns->s_in_len = sizeof(ns->s_in);
-	if (bind(ns->fd, (const struct sockaddr *) &ns->s_in,
-		sizeof(ns->s_in)) == -1) {
+	if (bind(ns->fd, (const struct sockaddr *)&ns->s_in,
+			sizeof(ns->s_in)) == -1) {
 		perror("Error when binding socket");
 		return (false);
 	}
-	getsockname(ns->fd, (struct sockaddr *) &ns->s_in, &ns->s_in_len);
+	getsockname(ns->fd, (struct sockaddr *)&ns->s_in, &ns->s_in_len);
 	return (true);
 }
 
@@ -49,8 +49,8 @@ bool listen_socket(int nb, net_t *ns)
 bool accept_socket(net_t *nc, net_t *ns)
 {
 	nc->s_in_len = sizeof(nc->s_in);
-	if ((nc->fd = accept(ns->fd,
-		(struct sockaddr *) &nc->s_in, &nc->s_in_len)) == -1) {
+	if ((nc->fd = accept(ns->fd, (struct sockaddr *)&nc->s_in,
+			&nc->s_in_len)) == -1) {
 		perror("Error when accepting socket");
 		return (false);
 	}

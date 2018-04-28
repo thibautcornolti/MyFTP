@@ -14,7 +14,7 @@ static void do_cwd(sess_t *sess, char *path, net_t *client)
 	DIR *dir;
 
 	transform_path(sess, &path, &new);
-	if (new &&strstr(new, sess->home) != new)
+	if (new && strstr(new, sess->home) != new)
 		dprintf(client->fd,
 			"250 Requested file action okay, completed.\n");
 	else if (new && (dir = opendir(new))) {

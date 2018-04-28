@@ -49,7 +49,6 @@ bool cmd_port(sess_t *sess, char *line, net_t *client)
 		if (addr[i] == ',')
 			addr[i] = '.';
 	port = get_port(strdup(addr));
-	dprintf(1, "port=%ld\n", port);
 	dprintf(client->fd, "200 PORT %s:%ld OK.\n", get_addr(addr), port);
 	start_active_mode(sess, get_addr(addr), port);
 	return (true);

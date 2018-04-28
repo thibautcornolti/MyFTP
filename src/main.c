@@ -5,10 +5,10 @@
 ** myftp
 */
 
+#include "../include/client.h"
+#include "../include/socket.h"
 #include <linux/limits.h>
 #include <stdlib.h>
-#include "../include/socket.h"
-#include "../include/client.h"
 
 static char *get_path(char *old)
 {
@@ -31,7 +31,8 @@ int main(int ac, char **av)
 	anonymousPath = get_path(av[2]);
 	if (!create_socket(&srv) || !bind_socket(port, &srv))
 		return (84);
-	if (!listen_socket(1024, &srv) || !accept_clients(anonymousPath, &srv)) {
+	if (!listen_socket(1024, &srv) ||
+		!accept_clients(anonymousPath, &srv)) {
 		close_socket(&srv);
 		return (84);
 	}

@@ -1,3 +1,10 @@
+##
+## EPITECH PROJECT, 2018
+## myftp
+## File description:
+## myftp
+##
+
 NAME	= server
 
 CC	= gcc
@@ -31,7 +38,7 @@ SRCS	= ./src/main.c \
 
 OBJS	= $(SRCS:.c=.o)
 
-CFLAGS = -I 
+CFLAGS = -I
 CFLAGS += -W -Wall -Wextra -g
 
 LDFLAGS += -pthread
@@ -39,7 +46,7 @@ LDFLAGS += -pthread
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	 $(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
+	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 clean:
 	$(RM) $(OBJS)

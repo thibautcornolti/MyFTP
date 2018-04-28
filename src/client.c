@@ -5,34 +5,42 @@
 ** myftp
 */
 
-#include "../include/socket.h"
-#include "../include/ftp.h"
 #include "../include/client.h"
+#include "../include/ftp.h"
+#include "../include/socket.h"
 
-static void fork_client(char *anonymousPath, net_t *client)
+static void loop_client(sess_t *sess, net_t *client)
 {
-	sess_t session = {0};
 	char buff[2049];
 	char c;
 	size_t idx;
 	int ret;
 
-	session.pathname = strdup(anonymousPath);
-	session.home = strdup(anonymousPath);
-	pthread_mutex_init(&session.pasv_mutex, NULL);
-	dprintf(client->fd, "220 Service ready for new user.\n");
 	do {
 		c = 0;
 		idx = 0;
 		memset(buff, 0, 2049);
-		while (c != '\n' && c != '\r' && (ret = read(client->fd, &c, 1)))
+		while (c != '\n' && c != '\r' &&
+			(ret = read(client->fd, &c, 1)))
 			buff[idx++ % 2048] = c;
-	} while (ret > 0 && commander(&session, buff, client));
+	} while (ret > 0 && commander(sess, buff, client));
+}
+
+static void fork_client(char *anonymousPath, net_t *client)
+{
+	sess_t session = {0};
+
+	session.pathname = strdup(anonymousPath);
+	session.home = strdup(anonymousPath);
+	pthread_mutex_init(&session.pasv_mutex, NULL);
+	dprintf(client->fd, "220 Service ready for new user.\n");
+	loop_client(&session, client);
 	if (session.netted) {
 		close(session.client.fd);
 		close(session.pasv_listen.fd);
 	}
-	dprintf(1, "Client %s disconnected!\n", inet_ntoa(client->s_in.sin_addr));
+	dprintf(1, "Client %s disconnected!\n",
+		inet_ntoa(client->s_in.sin_addr));
 	close_socket(client);
 	exit(0);
 }
@@ -43,14 +51,14 @@ bool accept_clients(char *anonymousPath, net_t *server)
 	while (20) {
 		net_t client = {0};
 		if (!accept_socket(&client, server))
-			continue ;
+			continue;
 		if (fork()) {
 			dprintf(1, "Client %s connected!\n",
 				inet_ntoa(client.s_in.sin_addr));
 			close_socket(&client);
-		} else {
-			fork_client(anonymousPath, &client);
 		}
+		else
+			fork_client(anonymousPath, &client);
 	}
 	return (true);
 }
