@@ -35,10 +35,10 @@ static void fork_client(char *anonymousPath, net_t *client)
 	pthread_mutex_init(&session.pasv_mutex, NULL);
 	dprintf(client->fd, "220 Service ready for new user.\n");
 	loop_client(&session, client);
-	if (session.netted) {
-		close(session.client.fd);
-		close(session.pasv_listen.fd);
-	}
+	if (session.netted && session.active)
+		close_active_mode(&session);
+	else if (session.netted)
+		close_passive_mode(&session);
 	dprintf(1, "Client %s disconnected!\n",
 		inet_ntoa(client->s_in.sin_addr));
 	close_socket(client);

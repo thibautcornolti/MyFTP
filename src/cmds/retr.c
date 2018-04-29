@@ -30,28 +30,34 @@ static void cmd_retr_do(sess_t *sess, char *file, net_t *client)
 		perror("Error when forking");
 }
 
+static void cmd_retr_lo(sess_t *sess, char *file, net_t *client)
+{
+	char *new;
+
+	transform_path(sess, &file, &new);
+	if (!new) {
+		dprintf(client->fd, "550 Failed to open file.\n");
+		return ;
+	}
+	prepare_cmd(sess);
+	dprintf(client->fd,
+		"150 File status okay; about to open data connection.\n");
+	cmd_retr_do(sess, new, client);
+	finish_cmd(sess);
+	dprintf(client->fd,
+		"226 Closing data connection. Requested file action "
+		"successful (for example, file transfer or file abort).\n");
+}
+
 bool cmd_retr(sess_t *sess, char *line, net_t *client)
 {
 	char *file = get_arg(line, 1);
-	char *new;
 
 	if (!sess->logged)
 		dprintf(client->fd, "530 Please login with USER and PASS.\n");
 	else if (!sess->netted)
 		dprintf(client->fd, "425 Use PORT or PASV first.\n");
-	else {
-		transform_path(sess, &file, &new);
-		if (!new) {
-			dprintf(client->fd, "550 Failed to open file.\n");
-			return (true);
-		}
-		prepare_cmd(sess);
-		dprintf(client->fd, "150 File status okay; about to open data \
-connection.\n");
-		cmd_retr_do(sess, new, client);
-		finish_cmd(sess);
-		dprintf(client->fd, "226 Closing data connection. Requested \
-file action successful (for example, file transfer or file abort).\n");
-	}
+	else
+		cmd_retr_lo(sess, file, client);
 	return (true);
 }
