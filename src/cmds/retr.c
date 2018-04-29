@@ -31,9 +31,11 @@ static void cmd_retr_do(sess_t *sess, char *file)
 static void cmd_retr_lo(sess_t *sess, char *file, net_t *client)
 {
 	char *new;
+	struct stat st;
 
 	transform_path(sess, &file, &new);
-	if (!new || access(new, R_OK)) {
+	if (!new || stat(new, &st) || !S_ISREG(st.st_mode) ||
+		access(new, R_OK)) {
 		dprintf(client->fd, "550 Failed to open file.\n");
 		return ;
 	}
