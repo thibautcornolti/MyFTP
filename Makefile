@@ -39,7 +39,7 @@ SRCS	= ./src/main.c \
 OBJS	= $(SRCS:.c=.o)
 
 CFLAGS = -I
-CFLAGS += -W -Wall -Wextra -g
+CFLAGS += -W -Wall -Wextra -g -D_GNU_SOURCE
 
 LDFLAGS += -pthread
 

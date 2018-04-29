@@ -10,8 +10,6 @@
 #include "../../include/passive.h"
 #include "../../include/socket_tools.h"
 
-#define _GNU_SOURCE
-
 static void cmd_list_do(sess_t *sess, char *path)
 {
 	char *cmd;
