@@ -6,10 +6,10 @@
 */
 
 #include "../include/client.h"
-#include "../include/ftp.h"
-#include "../include/socket.h"
-#include "../include/passive.h"
 #include "../include/active.h"
+#include "../include/ftp.h"
+#include "../include/passive.h"
+#include "../include/socket.h"
 
 static void loop_client(sess_t *sess, net_t *client)
 {
@@ -23,8 +23,10 @@ static void loop_client(sess_t *sess, net_t *client)
 		idx = 0;
 		memset(buff, 0, 2049);
 		while (c != '\n' && c != '\r' &&
-			(ret = read(client->fd, &c, 1)))
-			buff[idx++ % 2048] = c;
+			(ret = read(client->fd, &c, 1))) {
+			if (c)
+				buff[idx++ % 2048] = c;
+		}
 	} while (ret > 0 && commander(sess, buff, client));
 }
 
