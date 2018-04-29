@@ -35,6 +35,7 @@ SRCS	= ./src/main.c \
 		./src/cmds/stor.c \
 		./src/cmds/list.c \
 		./src/cmds/type.c \
+		./src/cmds/syst.c \
 
 OBJS	= $(SRCS:.c=.o)
 

@@ -31,7 +31,7 @@ bool connect_active_mode(sess_t *sess)
 			(struct sockaddr *)&sess->client.s_in,
 			sizeof(sess->client.s_in));
 		if (ret)
-			usleep(100000);
+			usleep(120000);
 	}
 	return (ret == 0);
 }

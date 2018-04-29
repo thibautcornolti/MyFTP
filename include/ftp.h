@@ -40,3 +40,4 @@ bool cmd_stor(sess_t *, char *, net_t *);
 bool cmd_list(sess_t *, char *, net_t *);
 bool cmd_auth(sess_t *, char *, net_t *);
 bool cmd_type(sess_t *, char *, net_t *);
+bool cmd_syst(sess_t *, char *, net_t *);

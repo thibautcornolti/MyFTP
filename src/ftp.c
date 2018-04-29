@@ -11,7 +11,7 @@ static const char *refs[] = {
 	"USER", "PASS", "CWD", "CDUP", "QUIT",
 	"DELE", "PWD", "PASV", "PORT", "HELP",
 	"NOOP", "RETR", "STOR", "LIST", "TYPE",
-	NULL,
+	"SYST", NULL,
 };
 
 static bool (*fcts[])(sess_t *, char *, net_t *) = {
@@ -20,6 +20,7 @@ static bool (*fcts[])(sess_t *, char *, net_t *) = {
 	&cmd_pwd, &cmd_pasv, &cmd_port,
 	&cmd_help, &cmd_noop, &cmd_retr,
 	&cmd_stor, &cmd_list, &cmd_type,
+	&cmd_syst,
 };
 
 static bool is_full_space(char *line)
