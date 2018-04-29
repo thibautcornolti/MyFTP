@@ -8,6 +8,8 @@
 #include "../include/client.h"
 #include "../include/ftp.h"
 #include "../include/socket.h"
+#include "../include/passive.h"
+#include "../include/active.h"
 
 static void loop_client(sess_t *sess, net_t *client)
 {
