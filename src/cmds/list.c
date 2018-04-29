@@ -6,9 +6,11 @@
 */
 
 #include "../../include/ftp.h"
-#include "../../include/passive.h"
 #include "../../include/active.h"
+#include "../../include/passive.h"
 #include "../../include/socket_tools.h"
+
+#define _GNU_SOURCE
 
 static void cmd_list_do(sess_t *sess, char *path)
 {
@@ -21,9 +23,11 @@ static void cmd_list_do(sess_t *sess, char *path)
 		dup2(sess->client.fd, 2);
 		system(cmd);
 		exit(0);
-	} else if (pid == 0) {
+	}
+	else if (pid == 0) {
 		waitpid(pid, NULL, 0);
-	} else {
+	}
+	else {
 		perror("Error when forking");
 	}
 }
@@ -40,6 +44,26 @@ static char *is_good_path(sess_t *sess, char *path, net_t *client)
 	return (new);
 }
 
+static void cmd_list_lo(sess_t *sess, char *arg, net_t *client)
+{
+	if (!arg)
+		arg = sess->pathname;
+	else if (!(arg = is_good_path(sess, arg, client)))
+		return ;
+	if (!prepare_cmd(sess)) {
+		dprintf(client->fd,
+			"425 Unable to establish data connection.\n");
+		return ;
+	}
+	dprintf(client->fd,
+		"150 File status okay; about to open data connection.\n");
+	cmd_list_do(sess, arg);
+	finish_cmd(sess);
+	dprintf(client->fd,
+		"226 Closing data connection. Requested file action "
+		"successful (for example, file transfer or file abort).\n");
+}
+
 bool cmd_list(sess_t *sess, char *line, net_t *client)
 {
 	char *arg = get_arg(line, 1);
@@ -48,18 +72,7 @@ bool cmd_list(sess_t *sess, char *line, net_t *client)
 		dprintf(client->fd, "530 Please login with USER and PASS.\n");
 	else if (!sess->netted)
 		dprintf(client->fd, "425 Use PORT or PASV first.\n");
-	else {
-		if (!arg)
-			arg = sess->pathname;
-		else if (!(arg = is_good_path(sess, arg, client)))
-			return (true);
-		prepare_cmd(sess);
-		dprintf(client->fd, "150 File status okay; about to open data \
-connection.\n");
-		cmd_list_do(sess, arg);
-		finish_cmd(sess);
-		dprintf(client->fd, "226 Closing data connection. Requested \
-file action successful (for example, file transfer or file abort).\n");
-	}
+	else
+		cmd_list_lo(sess, arg, client);
 	return (true);
 }

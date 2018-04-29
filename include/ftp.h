@@ -7,11 +7,10 @@
 
 #pragma once
 
-#define _GNU_SOURCE
-
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <limits.h>
 #include <fcntl.h>
 #include <dirent.h>

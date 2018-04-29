@@ -7,10 +7,13 @@
 
 #include "../include/socket_tools.h"
 
-void prepare_cmd(sess_t *sess)
+bool prepare_cmd(sess_t *sess)
 {
 	if (!sess->active)
 		pthread_mutex_lock(&sess->pasv_mutex);
+	else
+		return connect_active_mode(sess);
+	return (true);
 }
 
 void finish_cmd(sess_t *sess)

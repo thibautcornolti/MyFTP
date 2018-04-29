@@ -39,7 +39,11 @@ static void cmd_retr_lo(sess_t *sess, char *file, net_t *client)
 		dprintf(client->fd, "550 Failed to open file.\n");
 		return ;
 	}
-	prepare_cmd(sess);
+	if (!prepare_cmd(sess)) {
+		dprintf(client->fd,
+			"425 Unable to establish data connection.\n");
+		return ;
+	}
 	dprintf(client->fd,
 		"150 File status okay; about to open data connection.\n");
 	cmd_retr_do(sess, new);

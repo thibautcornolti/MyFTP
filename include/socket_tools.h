@@ -11,5 +11,5 @@
 #include "passive.h"
 #include "active.h"
 
-void prepare_cmd(sess_t *);
+bool prepare_cmd(sess_t *);
 void finish_cmd(sess_t *);

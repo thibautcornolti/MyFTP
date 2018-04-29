@@ -12,4 +12,5 @@
 #include "../include/socket.h"
 
 bool start_active_mode(sess_t *, char *, int);
+bool connect_active_mode(sess_t *);
 void close_active_mode(sess_t *);
